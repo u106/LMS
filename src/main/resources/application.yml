@@ -1,0 +1,55 @@
+spring:
+  application:
+    name: lms
+  profiles:
+    active: dev
+  servlet:
+    multipart:
+      # Rejected by the servlet container before the request reaches a
+      # controller - a cheap first line of defence. LessonFileValidator
+      # enforces the real per-type limits afterwards.
+      max-file-size: 512MB
+      max-request-size: 512MB
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: when-authorized
+
+lms:
+  s3:
+    # Note what is NOT here: access key and secret. The SDK's default
+    # credential provider chain finds them - environment variables locally,
+    # an IAM role in production. Credentials never belong in a file that
+    # gets committed.
+    bucket: ${S3_BUCKET:dev-lms-storage-bucket}
+    region: ${AWS_REGION:ap-south-1}
+    presigned-url-expiry-minutes: 15
+  cors:
+    # Origins the demo front end may be served from. A different port is a
+    # different origin as far as the browser is concerned.
+    allowed-origins:
+      - http://localhost:5500
+      - http://127.0.0.1:5500
+      - http://localhost:3000
+      - http://localhost:8000
+  jwt:
+    # No fallback default here on purpose - a missing JWT_SECRET should fail
+    # loudly at startup, not silently fall back to something checked into git.
+    secret: ${JWT_SECRET:e9uGZZ70pkn20hIpBsVp76neNOV8DohdH4XQBuhwxyt}
+    access-token-expiry-ms: 900000        # 15 minutes
+    refresh-token-expiry-ms: 604800000    # 7 days

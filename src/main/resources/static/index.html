@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hosiyar Learn</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;450;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0A0C11; --bg-2:#0E1117;
+      --surface:#141822; --surface-2:#1A1F2B; --surface-3:#222836;
+      --line:#242B3A; --line-2:#1C2230;
+      --ink:#E9ECF3; --ink-2:#B6BECD; --muted:#7B8598; --faint:#59627450;
+      --muted-solid:#596274;
+      --primary:#5B85FF; --primary-2:#3F6BEE; --primary-tint:#16203F; --primary-glow:rgba(91,133,255,.18);
+      --draft-fg:#E3A945; --draft-bg:#2A2113; --draft-line:#3D2F17;
+      --live-fg:#3FD996; --live-bg:#0F2A20; --live-line:#17402F;
+      --danger:#F26A75; --danger-bg:#2A1418; --danger-line:#412026;
+      --r:14px; --r-sm:9px;
+      --sh:0 1px 2px rgba(0,0,0,.4);
+      --sh-lg:0 18px 44px rgba(0,0,0,.55), 0 4px 12px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      background:var(--bg); color:var(--ink);
+      font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+      font-size:15px; line-height:1.55; -webkit-font-smoothing:antialiased;
+      background-image:
+              radial-gradient(900px 420px at 78% -8%, rgba(91,133,255,.09), transparent 62%),
+              radial-gradient(700px 360px at 8% 4%, rgba(63,217,150,.045), transparent 60%);
+      background-attachment:fixed;
+    }
+    h1,h2,h3,h4{font-family:'Plus Jakarta Sans','Inter',sans-serif; letter-spacing:-.022em; margin:0}
+    button{font-family:inherit}
+    ::selection{background:var(--primary-tint); color:#fff}
+    :focus-visible{outline:2px solid var(--primary); outline-offset:2px; border-radius:5px}
+    ::-webkit-scrollbar{width:11px;height:11px}
+    ::-webkit-scrollbar-track{background:var(--bg)}
+    ::-webkit-scrollbar-thumb{background:var(--surface-3); border-radius:9px; border:3px solid var(--bg)}
+    ::-webkit-scrollbar-thumb:hover{background:#2E3648}
+    @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+    /* ---------- nav ---------- */
+    .nav{position:sticky; top:0; z-index:50; background:rgba(10,12,17,.82);
+      backdrop-filter:saturate(160%) blur(14px); border-bottom:1px solid var(--line)}
+    .nav-in{max-width:1160px; margin:0 auto; padding:0 24px; height:64px; display:flex; align-items:center; gap:24px}
+    .brand{display:flex; align-items:center; gap:11px; cursor:pointer; background:none; border:0; padding:6px 8px;
+      margin-left:-8px; border-radius:var(--r-sm); transition:background .16s}
+    .brand:hover{background:var(--surface-2)}
+    .mark{width:31px; height:31px; border-radius:9px; flex:none; display:grid; place-items:center;
+      color:#fff; font-family:'Plus Jakarta Sans'; font-weight:800; font-size:15px;
+      background:linear-gradient(145deg,var(--primary),var(--primary-2));
+      box-shadow:0 3px 12px var(--primary-glow)}
+    .brand-name{font-family:'Plus Jakarta Sans'; font-weight:700; font-size:16.5px; letter-spacing:-.024em}
+    .nav-links{display:flex; gap:3px}
+    .nav-link{background:none; border:0; padding:7px 13px; border-radius:var(--r-sm); cursor:pointer;
+      font-size:14px; font-weight:500; color:var(--muted); transition:all .16s}
+    .nav-link:hover{background:var(--surface-2); color:var(--ink)}
+    .nav-link.on{background:var(--primary-tint); color:var(--primary)}
+    .nav-right{margin-left:auto; display:flex; align-items:center; gap:12px}
+    .who{display:flex; align-items:center; gap:10px; padding:5px 11px 5px 5px;
+      background:var(--surface); border:1px solid var(--line); border-radius:99px}
+    .avatar{width:29px; height:29px; border-radius:50%; display:grid; place-items:center;
+      font-weight:600; font-size:12px; flex:none; color:#fff;
+      background:linear-gradient(145deg,var(--primary),var(--primary-2))}
+    .who-txt{display:flex; flex-direction:column; line-height:1.2}
+    .who-name{font-size:13px; font-weight:600}
+    .who-role{font-size:10px; color:var(--primary); letter-spacing:.07em; text-transform:uppercase; font-weight:700}
+
+    main{max-width:1160px; margin:0 auto; padding:36px 24px 100px; min-height:70vh}
+    .view{display:none}
+    .view.on{display:block; animation:rise .34s cubic-bezier(.2,.7,.3,1)}
+    @keyframes rise{from{opacity:0; transform:translateY(9px)}to{opacity:1; transform:none}}
+
+    /* ---------- buttons ---------- */
+    .btn{display:inline-flex; align-items:center; justify-content:center; gap:7px;
+      padding:9px 16px; border-radius:var(--r-sm); border:1px solid var(--line);
+      font-size:14px; font-weight:500; cursor:pointer; background:var(--surface-2);
+      color:var(--ink-2); transition:all .16s; white-space:nowrap}
+    .btn:hover{background:var(--surface-3); border-color:#2E3648; color:var(--ink)}
+    .btn:active{transform:translateY(1px)}
+    .btn.primary{background:linear-gradient(160deg,var(--primary),var(--primary-2));
+      color:#fff; border-color:transparent; font-weight:600; box-shadow:0 3px 14px var(--primary-glow)}
+    .btn.primary:hover{filter:brightness(1.1); box-shadow:0 5px 20px var(--primary-glow)}
+    .btn.danger{color:var(--danger); border-color:var(--danger-line); background:var(--danger-bg)}
+    .btn.danger:hover{background:#33181D; border-color:#54282F; color:#FF8A93}
+    .btn.ghost{background:none; border-color:transparent; color:var(--muted)}
+    .btn.ghost:hover{background:var(--surface-2); color:var(--ink)}
+    .btn.sm{padding:6px 12px; font-size:13px}
+    .btn.lg{padding:12px 24px; font-size:15px}
+    .btn:disabled{opacity:.45; cursor:not-allowed; transform:none!important; filter:none}
+    .spin{width:13px;height:13px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;
+      border-radius:50%;animation:sp .6s linear infinite}
+    @keyframes sp{to{transform:rotate(360deg)}}
+
+    /* ---------- landing ---------- */
+    .hero{padding:60px 0 48px; display:grid; grid-template-columns:1.05fr .95fr; gap:52px; align-items:center}
+    .eyebrow{display:inline-flex; align-items:center; gap:8px; font-size:12.5px; font-weight:600;
+      color:var(--primary); background:var(--primary-tint); border:1px solid #22305C;
+      padding:5px 13px; border-radius:99px; margin-bottom:20px}
+    .eyebrow .led{width:6px;height:6px;border-radius:50%;background:var(--primary);
+      box-shadow:0 0 8px var(--primary); animation:blip 2.2s ease-in-out infinite}
+    @keyframes blip{0%,100%{opacity:1}50%{opacity:.35}}
+    .hero h1{font-size:50px; font-weight:800; line-height:1.06; margin-bottom:18px}
+    .hero h1 em{font-style:normal; background:linear-gradient(105deg,var(--primary),#8FB0FF);
+      -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent}
+    .hero p{font-size:17px; color:var(--muted); margin:0 0 30px; max-width:45ch}
+    .hero-cta{display:flex; gap:11px; flex-wrap:wrap}
+    .shelf{position:relative; height:300px}
+    .spine{position:absolute; left:0; right:0; height:80px; border-radius:var(--r);
+      background:var(--surface); border:1px solid var(--line); box-shadow:var(--sh-lg);
+      padding:14px 20px 14px 24px; display:flex; flex-direction:column; justify-content:center;
+      overflow:hidden; transition:transform .3s cubic-bezier(.2,.7,.3,1)}
+    .spine::before{content:''; position:absolute; left:0; top:0; bottom:0; width:4px}
+    .spine:nth-child(1){top:0; transform:rotate(-1.5deg) translateX(8px); z-index:3}
+    .spine:nth-child(2){top:100px; transform:rotate(.9deg); z-index:2}
+    .spine:nth-child(3){top:200px; transform:rotate(-.6deg) translateX(12px); z-index:1}
+    .spine:hover{transform:rotate(0) translateX(0) scale(1.02)}
+    .spine:nth-child(1)::before{background:var(--primary); box-shadow:0 0 16px var(--primary-glow)}
+    .spine:nth-child(2)::before{background:var(--live-fg)}
+    .spine:nth-child(3)::before{background:var(--draft-fg)}
+    .spine b{font-family:'Plus Jakarta Sans'; font-size:15px; font-weight:700}
+    .spine span{font-size:12.5px; color:var(--muted-solid)}
+
+    /* ---------- page head ---------- */
+    .phead{display:flex; align-items:flex-end; gap:16px; margin-bottom:26px; flex-wrap:wrap}
+    .phead h2{font-size:27px; font-weight:700}
+    .phead p{margin:6px 0 0; color:var(--muted); font-size:14.5px}
+    .phead .btn{margin-left:auto}
+    .count{font-size:12px; font-weight:600; color:var(--muted); background:var(--surface-2);
+      border:1px solid var(--line); padding:2px 9px; border-radius:99px; margin-left:9px; vertical-align:3px}
+
+    /* ---------- cards ---------- */
+    .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:18px}
+    .card{background:var(--surface); border:1px solid var(--line); border-radius:var(--r);
+      overflow:hidden; display:flex; flex-direction:column; cursor:pointer; text-align:left;
+      padding:0; font:inherit; color:inherit; position:relative;
+      transition:transform .2s cubic-bezier(.2,.7,.3,1), border-color .2s, box-shadow .2s}
+    .card:hover{transform:translateY(-3px); border-color:#2F3849; box-shadow:var(--sh-lg)}
+    .card-top{height:4px}
+    .card-body{padding:18px 20px 20px; display:flex; flex-direction:column; flex:1}
+    .card h3{font-size:16.5px; font-weight:700; margin-bottom:8px; line-height:1.35}
+    .card .desc{font-size:13.5px; color:var(--muted); margin:0 0 18px; flex:1;
+      display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden}
+    .card-foot{display:flex; align-items:center; gap:9px; border-top:1px solid var(--line-2); padding-top:14px}
+    .by{display:flex; align-items:center; gap:8px; font-size:13px; color:var(--ink-2); min-width:0}
+    .by .avatar{width:24px; height:24px; font-size:10.5px}
+    .by span{overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+
+    .pill{font-size:10px; font-weight:700; letter-spacing:.07em; text-transform:uppercase;
+      padding:3.5px 9px; border-radius:99px; flex:none; border:1px solid}
+    .pill.draft{background:var(--draft-bg); color:var(--draft-fg); border-color:var(--draft-line)}
+    .pill.live{background:var(--live-bg); color:var(--live-fg); border-color:var(--live-line)}
+    .pill.role{background:var(--primary-tint); color:var(--primary); border-color:#22305C}
+
+    /* ---------- detail ---------- */
+    .back{display:inline-flex; align-items:center; gap:7px; font-size:13.5px; color:var(--muted);
+      background:none; border:0; cursor:pointer; padding:6px 10px 6px 8px; margin:0 0 18px -8px;
+      font-weight:500; border-radius:var(--r-sm); transition:all .16s}
+    .back:hover{color:var(--ink); background:var(--surface-2)}
+    .detail{background:var(--surface); border:1px solid var(--line); border-radius:var(--r);
+      overflow:hidden; margin-bottom:22px; box-shadow:var(--sh)}
+    .detail-band{height:5px}
+    .detail-in{padding:28px 30px}
+    .detail h2{font-size:30px; font-weight:800; margin-bottom:12px; line-height:1.18}
+    .detail .lede{font-size:15.5px; color:var(--ink-2); margin:0 0 22px; max-width:72ch; line-height:1.6}
+    .meta{display:flex; align-items:center; gap:14px; flex-wrap:wrap; padding-top:20px; border-top:1px solid var(--line-2)}
+
+    .lessons{background:var(--surface); border:1px solid var(--line); border-radius:var(--r); box-shadow:var(--sh)}
+    .lessons-head{display:flex; align-items:center; padding:18px 24px; border-bottom:1px solid var(--line-2)}
+    .lessons-head h3{font-size:16px; font-weight:700}
+    .lessons-head .btn{margin-left:auto}
+    .lesson{display:flex; align-items:center; gap:16px; padding:16px 24px; border-bottom:1px solid var(--line-2);
+      transition:background .15s}
+    .lesson:last-child{border-bottom:0}
+    .lesson:hover{background:var(--surface-2)}
+    .lpos{width:30px; height:30px; border-radius:9px; background:var(--surface-3); border:1px solid var(--line);
+      display:grid; place-items:center; font-size:12.5px; font-weight:700; color:var(--muted); flex:none}
+    .lbody{flex:1; min-width:0}
+    .lbody b{font-size:14.5px; font-weight:600; display:block}
+    .lbody p{margin:3px 0 0; font-size:13px; color:var(--muted); overflow:hidden;
+      text-overflow:ellipsis; white-space:nowrap}
+    .lacts{display:flex; gap:6px; flex:none; opacity:0; transition:opacity .18s; flex-wrap:wrap; justify-content:flex-end}
+    .lesson:hover .lacts{opacity:1}
+    .lfile{margin-top:9px}
+    .filechip{display:inline-flex; align-items:center; gap:7px; font-family:inherit;
+      font-size:12px; font-weight:500; color:var(--live-fg); background:var(--live-bg);
+      border:1px solid var(--live-line); padding:5px 11px; border-radius:99px; cursor:pointer;
+      transition:all .15s}
+    .filechip:hover{background:#123528; border-color:#1d5a42}
+    .filechip .fi{font-size:9px}
+    .filechip.empty{color:var(--muted-solid); background:var(--surface-2); border-color:var(--line);
+      cursor:default}
+    .dropzone{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px;
+      padding:34px 20px; border:1.5px dashed var(--line); border-radius:var(--r); cursor:pointer;
+      background:var(--bg-2); transition:all .16s; text-align:center}
+    .dropzone:hover{border-color:var(--primary); background:var(--primary-tint)}
+    .dz-ico{width:40px; height:40px; border-radius:11px; background:var(--surface-3); color:var(--primary);
+      display:grid; place-items:center; font-size:19px; margin-bottom:4px}
+    .dz-main{font-size:14.5px; font-weight:600; color:var(--ink)}
+    .dz-name{font-size:12.5px; color:var(--muted)}
+
+    /* ---------- table ---------- */
+    .tbl-wrap{border:1px solid var(--line); border-radius:var(--r); overflow:hidden; box-shadow:var(--sh)}
+    .tbl{width:100%; border-collapse:collapse; background:var(--surface)}
+    .tbl th{text-align:left; font-size:11px; letter-spacing:.07em; text-transform:uppercase; color:var(--muted);
+      font-weight:700; padding:14px 22px; background:var(--surface-2); border-bottom:1px solid var(--line)}
+    .tbl td{padding:15px 22px; border-bottom:1px solid var(--line-2); font-size:14px}
+    .tbl tr:last-child td{border-bottom:0}
+    .tbl tbody tr{transition:background .15s}
+    .tbl tbody tr:hover td{background:var(--surface-2)}
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12.5px; color:var(--muted)}
+
+    /* ---------- auth ---------- */
+    .auth-wrap{max-width:414px; margin:40px auto}
+    .auth{background:var(--surface); border:1px solid var(--line); border-radius:var(--r);
+      box-shadow:var(--sh-lg); padding:34px}
+    .auth h2{font-size:23px; font-weight:700; margin-bottom:7px}
+    .auth .sub{color:var(--muted); font-size:14px; margin:0 0 26px}
+    .field{margin-bottom:16px}
+    .field label{display:block; font-size:13px; font-weight:600; margin-bottom:7px; color:var(--ink-2)}
+    .field input,.field textarea,.field select{width:100%; padding:11px 14px; border:1px solid var(--line);
+      border-radius:var(--r-sm); font-family:inherit; font-size:14.5px; background:var(--bg-2);
+      color:var(--ink); transition:border-color .15s, box-shadow .15s}
+    .field input::placeholder,.field textarea::placeholder{color:var(--muted-solid)}
+    .field input:focus,.field textarea:focus,.field select:focus{outline:none; border-color:var(--primary);
+      box-shadow:0 0 0 3px var(--primary-tint)}
+    .field textarea{resize:vertical; min-height:92px; line-height:1.6}
+    .field .hint{font-size:12.5px; color:var(--muted-solid); margin-top:6px}
+    .swap{text-align:center; margin-top:22px; font-size:14px; color:var(--muted)}
+    .swap button{background:none; border:0; color:var(--primary); font-weight:600; cursor:pointer;
+      font-size:14px; padding:0}
+    .swap button:hover{text-decoration:underline}
+
+    /* ---------- modal ---------- */
+    .scrim{position:fixed; inset:0; background:rgba(4,6,10,.72); backdrop-filter:blur(5px);
+      display:none; place-items:center; z-index:100; padding:24px}
+    .scrim.on{display:grid; animation:fadein .18s ease}
+    @keyframes fadein{from{opacity:0}to{opacity:1}}
+    .modal{background:var(--surface); border:1px solid var(--line); border-radius:16px;
+      box-shadow:var(--sh-lg); width:100%; max-width:530px; max-height:88vh; overflow-y:auto;
+      animation:pop .26s cubic-bezier(.2,.8,.3,1)}
+    @keyframes pop{from{opacity:0; transform:scale(.96) translateY(12px)}to{opacity:1; transform:none}}
+    .modal-head{padding:24px 28px 0}
+    .modal-head h3{font-size:19px; font-weight:700}
+    .modal-head p{margin:6px 0 0; color:var(--muted); font-size:13.5px}
+    .modal-body{padding:22px 28px}
+    .modal-foot{display:flex; gap:9px; justify-content:flex-end; padding:0 28px 26px}
+
+    /* ---------- states ---------- */
+    .empty{text-align:center; padding:70px 30px; background:var(--surface);
+      border:1px dashed var(--line); border-radius:var(--r)}
+    .empty .ico{width:46px; height:46px; border-radius:13px; background:var(--surface-3);
+      display:grid; place-items:center; margin:0 auto 16px; font-size:21px}
+    .empty h3{font-size:17px; font-weight:700; margin-bottom:8px}
+    .empty p{color:var(--muted); font-size:14px; margin:0 auto 22px; max-width:42ch}
+    .skel{background:var(--surface); border:1px solid var(--line); border-radius:var(--r); height:178px;
+      position:relative; overflow:hidden}
+    .skel::after{content:''; position:absolute; inset:0;
+      background:linear-gradient(90deg,transparent,rgba(255,255,255,.035),transparent);
+      animation:sweep 1.4s infinite}
+    @keyframes sweep{to{transform:translateX(100%)}}
+
+    /* ---------- toasts ---------- */
+    .toasts{position:fixed; bottom:24px; right:24px; z-index:200; display:flex;
+      flex-direction:column-reverse; gap:10px; max-width:370px}
+    .toast{background:var(--surface-2); border:1px solid var(--line); border-left:3px solid var(--primary);
+      border-radius:11px; padding:13px 16px 13px 14px; box-shadow:var(--sh-lg);
+      display:flex; gap:12px; align-items:flex-start; animation:tin .3s cubic-bezier(.2,.8,.3,1);
+      position:relative; overflow:hidden}
+    .toast.out{animation:tout .28s ease forwards}
+    @keyframes tin{from{opacity:0; transform:translateX(26px) scale(.97)}to{opacity:1; transform:none}}
+    @keyframes tout{to{opacity:0; transform:translateX(26px) scale(.97)}}
+    .toast .tico{width:22px; height:22px; border-radius:7px; flex:none; display:grid; place-items:center;
+      font-size:12px; font-weight:700; margin-top:1px}
+    .toast .ttxt{flex:1; min-width:0}
+    .toast .ttitle{font-size:13.5px; font-weight:600; line-height:1.4}
+    .toast .tmsg{font-size:12.5px; color:var(--muted); margin-top:2px; line-height:1.5}
+    .toast .tbar{position:absolute; left:0; bottom:0; height:2px; background:var(--primary); opacity:.5;
+      animation:drain 4s linear forwards}
+    @keyframes drain{from{width:100%}to{width:0}}
+    .toast.good{border-left-color:var(--live-fg)}
+    .toast.good .tico{background:var(--live-bg); color:var(--live-fg)}
+    .toast.good .tbar{background:var(--live-fg)}
+    .toast.bad{border-left-color:var(--danger)}
+    .toast.bad .tico{background:var(--danger-bg); color:var(--danger)}
+    .toast.bad .tbar{background:var(--danger)}
+    .toast.info .tico{background:var(--primary-tint); color:var(--primary)}
+
+    /* ---------- footer ---------- */
+    .foot{border-top:1px solid var(--line); margin-top:60px}
+    .foot-in{max-width:1160px; margin:0 auto; padding:22px 24px; display:flex; align-items:center;
+      gap:14px; font-size:12.5px; color:var(--muted-solid); flex-wrap:wrap}
+    .status{display:flex; align-items:center; gap:7px; margin-left:auto}
+    .status .led{width:7px; height:7px; border-radius:50%; background:var(--muted-solid)}
+    .status.up .led{background:var(--live-fg); box-shadow:0 0 8px rgba(63,217,150,.5)}
+    .status.down .led{background:var(--danger); box-shadow:0 0 8px rgba(242,106,117,.5)}
+
+    @media (max-width:880px){
+      .hero{grid-template-columns:1fr; gap:36px; padding:40px 0}
+      .hero h1{font-size:37px}
+      .nav-links{display:none}
+      .who-txt{display:none}
+      .lacts{opacity:1}
+      .toasts{left:16px; right:16px; max-width:none}
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-in">
+    <button class="brand" onclick="goHome()" title="Go to home">
+      <div class="mark">H</div>
+      <div class="brand-name">Hosiyar Learn</div>
+    </button>
+    <div class="nav-links" id="navLinks"></div>
+    <div class="nav-right" id="navRight"></div>
+  </div>
+</nav>
+
+<main>
+  <section class="view" id="v-landing">
+    <div class="hero">
+      <div>
+        <div class="eyebrow"><span class="led"></span> Built on Spring Boot</div>
+        <h1>Learn backend engineering, <em>one course at a time.</em></h1>
+        <p>Courses written by instructors who build for a living. Browse the catalog free — sign in when you're ready to start.</p>
+        <div class="hero-cta">
+          <button class="btn primary lg" onclick="go('catalog')">Browse courses</button>
+          <button class="btn lg" onclick="go('register')">Create an account</button>
+        </div>
+      </div>
+      <div class="shelf">
+        <div class="spine"><b>Spring Security in depth</b><span>Filters, JWT, authorization</span></div>
+        <div class="spine"><b>Designing REST APIs</b><span>Contracts, pagination, versioning</span></div>
+        <div class="spine"><b>Data modelling with JPA</b><span>Entities, relationships, migrations</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="view" id="v-catalog">
+    <div class="phead">
+      <div>
+        <h2>Course catalog<span class="count" id="catCount" style="display:none"></span></h2>
+        <p>Published courses, open to everyone.</p>
+      </div>
+    </div>
+    <div id="catalogGrid" class="grid"></div>
+  </section>
+
+  <section class="view" id="v-course">
+    <button class="back" onclick="back()">← Back</button>
+    <div id="courseDetail"></div>
+  </section>
+
+  <section class="view" id="v-teaching">
+    <div class="phead">
+      <div>
+        <h2>Your courses<span class="count" id="teachCount" style="display:none"></span></h2>
+        <p>Drafts stay private until you publish them.</p>
+      </div>
+      <button class="btn primary" onclick="openCourseModal()">+ New course</button>
+    </div>
+    <div id="teachingGrid" class="grid"></div>
+  </section>
+
+  <section class="view" id="v-people">
+    <div class="phead">
+      <div>
+        <h2>People<span class="count" id="peopleCount" style="display:none"></span></h2>
+        <p>Everyone registered on the platform.</p>
+      </div>
+    </div>
+    <div id="peopleTable"></div>
+  </section>
+
+  <section class="view" id="v-login">
+    <div class="auth-wrap">
+      <div class="auth">
+        <h2>Sign in</h2>
+        <p class="sub">Pick up where you left off.</p>
+        <div class="field">
+          <label for="li-email">Email</label>
+          <input id="li-email" type="email" autocomplete="email" placeholder="you@example.com">
+        </div>
+        <div class="field">
+          <label for="li-pass">Password</label>
+          <input id="li-pass" type="password" autocomplete="current-password" placeholder="••••••••">
+        </div>
+        <button class="btn primary lg" style="width:100%" id="li-btn" onclick="doLogin()">Sign in</button>
+        <div class="swap">New here? <button onclick="go('register')">Create an account</button></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="view" id="v-register">
+    <div class="auth-wrap">
+      <div class="auth">
+        <h2>Create your account</h2>
+        <p class="sub">Everyone starts as a student.</p>
+        <div class="field">
+          <label for="rg-name">Full name</label>
+          <input id="rg-name" type="text" autocomplete="name" placeholder="Ada Lovelace">
+        </div>
+        <div class="field">
+          <label for="rg-email">Email</label>
+          <input id="rg-email" type="email" autocomplete="email" placeholder="you@example.com">
+        </div>
+        <div class="field">
+          <label for="rg-pass">Password</label>
+          <input id="rg-pass" type="password" autocomplete="new-password" placeholder="At least 8 characters">
+          <div class="hint">Minimum 8 characters.</div>
+        </div>
+        <button class="btn primary lg" style="width:100%" id="rg-btn" onclick="doRegister()">Create account</button>
+        <div class="swap">Already have an account? <button onclick="go('login')">Sign in</button></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="foot-in">
+    <span>Hosiyar Learn — demo client for the Spring Boot LMS API</span>
+    <div class="status" id="apiStatus"><span class="led"></span><span id="apiStatusText">Checking API…</span></div>
+  </div>
+</footer>
+
+<div class="scrim" id="courseScrim">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="cm-title">New course</h3>
+      <p id="cm-sub">It'll be saved as a draft.</p>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <label for="cm-name">Title</label>
+        <input id="cm-name" type="text" placeholder="Spring Security in depth">
+      </div>
+      <div class="field">
+        <label for="cm-desc">Description</label>
+        <textarea id="cm-desc" placeholder="What will someone be able to do after this course?"></textarea>
+      </div>
+      <div class="field" id="cm-statusField" style="display:none">
+        <label for="cm-status">Visibility</label>
+        <select id="cm-status">
+          <option value="DRAFT">Draft — only you can see it</option>
+          <option value="PUBLISHED">Published — listed in the catalog</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn ghost" onclick="closeModal('courseScrim')">Cancel</button>
+      <button class="btn primary" id="cm-save" onclick="saveCourse()">Save course</button>
+    </div>
+  </div>
+</div>
+
+<div class="scrim" id="lessonScrim">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="lm-title">Add a lesson</h3>
+      <p id="lm-sub">Lessons appear in position order.</p>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <label for="lm-name">Title</label>
+        <input id="lm-name" type="text" placeholder="What is dependency injection?">
+      </div>
+      <div class="field">
+        <label for="lm-pos">Position</label>
+        <input id="lm-pos" type="number" min="1" value="1">
+      </div>
+      <div class="field">
+        <label for="lm-content">Content</label>
+        <textarea id="lm-content" placeholder="The lesson body."></textarea>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn ghost" onclick="closeModal('lessonScrim')">Cancel</button>
+      <button class="btn primary" id="lm-save" onclick="saveLesson()">Save lesson</button>
+    </div>
+  </div>
+</div>
+
+<div class="scrim" id="uploadScrim">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="up-title">Upload a file</h3>
+      <p id="up-sub">mp4, webm, pdf, png or jpg.</p>
+    </div>
+    <div class="modal-body">
+      <label class="dropzone" for="up-input">
+        <div class="dz-ico">↑</div>
+        <div class="dz-main">Choose a file</div>
+        <div class="dz-name" id="up-name">No file chosen</div>
+      </label>
+      <input id="up-input" type="file" style="display:none"
+             accept=".mp4,.webm,.pdf,.png,.jpg,.jpeg"
+             onchange="document.getElementById('up-name').textContent = this.files[0]?.name || 'No file chosen'; document.getElementById('up-save').disabled = !this.files[0];">
+    </div>
+    <div class="modal-foot">
+      <button class="btn ghost" onclick="closeModal('uploadScrim')">Cancel</button>
+      <button class="btn primary" id="up-save" onclick="doUpload()" disabled>Upload</button>
+    </div>
+  </div>
+</div>
+
+<div class="toasts" id="toasts"></div>
+
+<script>
+  /* ============================================================
+     Hosiyar Learn — demo front end for the Spring Boot LMS API
+     ============================================================ */
+
+  const API = '/api/v1';
+  const SPINES = ['#5B85FF','#3FD996','#E3A945','#A97BF0','#F26A75','#3FC4D9'];
+
+  let token   = localStorage.getItem('lms_token') || null;
+  let me      = JSON.parse(localStorage.getItem('lms_me') || 'null');
+  let view    = 'landing';
+  let prevView= 'catalog';
+  let current = null;
+  let editingCourse = null;
+  let editingLesson = null;
+
+  const $ = id => document.getElementById(id);
+  const esc = s => (s ?? '').toString()
+          .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  const initials = n => (n||'?').trim().split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase();
+  const spineFor = id => { let h=0; for (const c of (id||'')) h=(h*31+c.charCodeAt(0))>>>0; return SPINES[h%SPINES.length]; };
+
+  /* ---------- toasts ---------- */
+  function toast(title, msg, kind = 'info'){
+    const glyph = kind === 'good' ? '✓' : kind === 'bad' ? '!' : 'i';
+    const el = document.createElement('div');
+    el.className = 'toast ' + kind;
+    el.innerHTML = `<div class="tico">${glyph}</div>
+    <div class="ttxt"><div class="ttitle">${esc(title)}</div>
+    ${msg ? `<div class="tmsg">${esc(msg)}</div>` : ''}</div>
+    <div class="tbar"></div>`;
+    $('toasts').appendChild(el);
+    setTimeout(() => { el.classList.add('out'); setTimeout(() => el.remove(), 300); }, 4000);
+  }
+  const ok   = (t,m) => toast(t, m, 'good');
+  const err  = (t,m) => toast(t, m, 'bad');
+  const info = (t,m) => toast(t, m, 'info');
+
+  /* ---------- api ---------- */
+  async function api(path, opts = {}){
+    const headers = { ...(opts.headers || {}) };
+    if (opts.body) headers['Content-Type'] = 'application/json';
+    if (token)     headers['Authorization'] = 'Bearer ' + token;
+
+    let res;
+    try {
+      res = await fetch(API + path, { ...opts, headers });
+    } catch {
+      setApiStatus(false);
+      throw new Error("Can't reach the API. Is the app running on localhost:8080?");
+    }
+    setApiStatus(true);
+    if (res.status === 204) return null;
+
+    const text = await res.text();
+    let payload = null;
+    try { payload = text ? JSON.parse(text) : null; } catch {}
+
+    if (!res.ok){
+      if (res.status === 401 && token){ signOut(true); throw new Error('Your session expired. Sign in again.'); }
+      const detail = payload?.details?.length ? payload.details.join(', ') : null;
+      throw new Error(detail || payload?.message || `Request failed (${res.status})`);
+    }
+    return payload?.data !== undefined ? payload.data : payload;
+  }
+  const rows = page => Array.isArray(page) ? page : (page?.content ?? []);
+
+  function setApiStatus(up){
+    const el = $('apiStatus');
+    el.className = 'status ' + (up ? 'up' : 'down');
+    $('apiStatusText').textContent = up ? 'API connected' : 'API unreachable';
+  }
+
+  /* ---------- session ---------- */
+  const signedIn = () => !!token && !!me;
+  const isRole = r => me?.role === r;
+
+  function signOut(quiet){
+    const name = me?.name?.split(' ')[0];
+    token = null; me = null;
+    localStorage.removeItem('lms_token'); localStorage.removeItem('lms_me');
+    chrome(); go('landing');
+    if (!quiet) info('Signed out', name ? `See you soon, ${name}.` : null);
+  }
+
+  const homeFor = role => role === 'INSTRUCTOR' ? 'teaching' : role === 'ADMIN' ? 'people' : 'catalog';
+  function goHome(){ go(signedIn() ? homeFor(me.role) : 'landing'); }
+
+  /* ---------- chrome ---------- */
+  function chrome(){
+    const links = [['catalog','Catalog']];
+    if (isRole('INSTRUCTOR')) links.push(['teaching','Teaching']);
+    if (isRole('ADMIN'))      links.push(['people','People']);
+
+    $('navLinks').innerHTML = links.map(([id,label]) =>
+            `<button class="nav-link ${view===id?'on':''}" onclick="go('${id}')">${label}</button>`).join('');
+
+    $('navRight').innerHTML = signedIn()
+            ? `<div class="who">
+         <div class="avatar">${esc(initials(me.name))}</div>
+         <div class="who-txt">
+           <div class="who-name">${esc(me.name)}</div>
+           <div class="who-role">${esc(me.role)}</div>
+         </div>
+       </div>
+       <button class="btn sm" onclick="signOut()">Sign out</button>`
+            : `<button class="btn sm" onclick="go('login')">Sign in</button>
+       <button class="btn primary sm" onclick="go('register')">Get started</button>`;
+  }
+
+  /* ---------- routing ---------- */
+  function go(next){
+    if (['teaching','people'].includes(next) && !signedIn()){
+      info('Sign in required', 'That page needs an account.');
+      next = 'login';
+    }
+    if (next !== 'course') prevView = next;
+    view = next;
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('on'));
+    $('v-' + next)?.classList.add('on');
+    chrome();
+    window.scrollTo({ top:0 });
+    if (next === 'catalog')  loadCatalog();
+    if (next === 'teaching') loadTeaching();
+    if (next === 'people')   loadPeople();
+  }
+  const back = () => go(prevView === 'course' ? 'catalog' : prevView);
+
+  function busy(btn, on, label){
+    btn.disabled = on;
+    btn.innerHTML = on ? `<span class="spin"></span> ${label}` : label;
+  }
+
+  /* ---------- auth ---------- */
+  async function doRegister(){
+    const name  = $('rg-name').value.trim();
+    const email = $('rg-email').value.trim();
+    const pass  = $('rg-pass').value;
+    if (!name || !email || !pass) return err('Missing details', 'Fill in every field to continue.');
+
+    const btn = $('rg-btn'); busy(btn, true, 'Creating…');
+    try {
+      await api('/users/register', { method:'POST', body: JSON.stringify({ name, email, password: pass }) });
+      ok('Account created', 'Signing you in now.');
+      $('li-email').value = email; $('li-pass').value = pass;
+      await doLogin();
+    } catch (e) { err("Couldn't create account", e.message); }
+    finally { busy(btn, false, 'Create account'); }
+  }
+
+  async function doLogin(){
+    const email = $('li-email').value.trim();
+    const pass  = $('li-pass').value;
+    if (!email || !pass) return err('Missing details', 'Enter your email and password.');
+
+    const btn = $('li-btn'); busy(btn, true, 'Signing in…');
+    try {
+      const auth = await api('/auth/login', { method:'POST', body: JSON.stringify({ email, password: pass }) });
+      token = auth.accessToken;
+      localStorage.setItem('lms_token', token);
+      me = await api('/users/me');                       // role comes from the server, not the client
+      localStorage.setItem('lms_me', JSON.stringify(me));
+      $('li-pass').value = ''; $('rg-pass').value = '';
+      ok(`Welcome back, ${me.name.split(' ')[0]}`, `Signed in as ${me.role.toLowerCase()}.`);
+      chrome(); go(homeFor(me.role));
+    } catch (e) {
+      token = null; localStorage.removeItem('lms_token');
+      err("Couldn't sign in", e.message);
+    } finally { busy(btn, false, 'Sign in'); }
+  }
+
+  /* ---------- catalog ---------- */
+  const skeletons = n => `<div class="grid">${'<div class="skel"></div>'.repeat(n)}</div>`;
+
+  async function loadCatalog(){
+    const box = $('catalogGrid'); box.className = ''; box.innerHTML = skeletons(6);
+    try {
+      const list = rows(await api('/courses?page=0&size=24'));
+      box.className = 'grid';
+      $('catCount').style.display = list.length ? 'inline-block' : 'none';
+      $('catCount').textContent = list.length;
+      box.innerHTML = list.length ? list.map(courseCard).join('') : `
+      <div class="empty" style="grid-column:1/-1">
+        <div class="ico">📚</div>
+        <h3>No published courses yet</h3>
+        <p>Once an instructor publishes a course, it shows up here.</p>
+      </div>`;
+    } catch (e) {
+      box.className = '';
+      box.innerHTML = `<div class="empty"><div class="ico">⚠</div>
+      <h3>Couldn't load the catalog</h3><p>${esc(e.message)}</p>
+      <button class="btn" onclick="loadCatalog()">Try again</button></div>`;
+    }
+  }
+
+  function courseCard(c){
+    const badge = c.status === 'PUBLISHED'
+            ? '<span class="pill live">Published</span>' : '<span class="pill draft">Draft</span>';
+    return `<button class="card" onclick="openCourse('${c.id}')">
+    <div class="card-top" style="background:${spineFor(c.id)}"></div>
+    <div class="card-body">
+      <h3>${esc(c.title)}</h3>
+      <p class="desc">${esc(c.description || 'No description yet.')}</p>
+      <div class="card-foot">
+        <div class="by"><div class="avatar">${esc(initials(c.instructorName))}</div>
+          <span>${esc(c.instructorName || 'Unknown')}</span></div>
+        <div style="margin-left:auto">${badge}</div>
+      </div>
+    </div></button>`;
+  }
+
+  /* ---------- teaching ---------- */
+  async function loadTeaching(){
+    const box = $('teachingGrid'); box.className = ''; box.innerHTML = skeletons(3);
+    try {
+      const list = rows(await api('/courses/me?page=0&size=48'));
+      box.className = 'grid';
+      $('teachCount').style.display = list.length ? 'inline-block' : 'none';
+      $('teachCount').textContent = list.length;
+      box.innerHTML = list.length ? list.map(courseCard).join('') : `
+      <div class="empty" style="grid-column:1/-1">
+        <div class="ico">✎</div>
+        <h3>You haven't created a course yet</h3>
+        <p>Start with a title and a short description — you can add lessons next.</p>
+        <button class="btn primary" onclick="openCourseModal()">+ New course</button>
+      </div>`;
+    } catch (e) {
+      box.className = '';
+      box.innerHTML = `<div class="empty"><div class="ico">⚠</div>
+      <h3>Couldn't load your courses</h3><p>${esc(e.message)}</p></div>`;
+    }
+  }
+
+  /* ---------- course detail ---------- */
+  async function openCourse(id){
+    go('course');
+    $('courseDetail').innerHTML = '<div class="skel" style="height:230px"></div>';
+    try {
+      current = await api('/courses/' + id);
+      renderCourse(); loadLessons(id);
+    } catch (e) {
+      $('courseDetail').innerHTML = `<div class="empty"><div class="ico">⚠</div>
+      <h3>Couldn't open this course</h3><p>${esc(e.message)}</p></div>`;
+    }
+  }
+
+  const owned = () => signedIn() && current && me.id === current.instructorId;
+
+  function renderCourse(){
+    const c = current;
+    const badge = c.status === 'PUBLISHED'
+            ? '<span class="pill live">Published</span>' : '<span class="pill draft">Draft</span>';
+    const ownerBar = owned() ? `
+    <div style="margin-left:auto; display:flex; gap:8px; flex-wrap:wrap">
+      ${c.status === 'DRAFT'
+            ? `<button class="btn primary sm" onclick="publish()">Publish</button>`
+            : `<button class="btn sm" onclick="unpublish()">Move to draft</button>`}
+      <button class="btn sm" onclick="openCourseModal(true)">Edit</button>
+      <button class="btn danger sm" onclick="removeCourse()">Delete</button>
+    </div>` : '';
+
+    $('courseDetail').innerHTML = `
+    <div class="detail">
+      <div class="detail-band" style="background:${spineFor(c.id)}"></div>
+      <div class="detail-in">
+        <h2>${esc(c.title)}</h2>
+        <p class="lede">${esc(c.description || 'No description yet.')}</p>
+        <div class="meta">
+          <div class="by"><div class="avatar">${esc(initials(c.instructorName))}</div>
+            <span>${esc(c.instructorName || 'Unknown')}</span></div>
+          ${badge}${ownerBar}
+        </div>
+      </div>
+    </div>
+    <div class="lessons">
+      <div class="lessons-head">
+        <h3>Lessons</h3>
+        ${owned() ? `<button class="btn primary sm" onclick="openLessonModal()">+ Add lesson</button>` : ''}
+      </div>
+      <div id="lessonList"><div style="padding:22px"><div class="skel" style="height:62px"></div></div></div>
+    </div>`;
+  }
+
+  async function loadLessons(courseId){
+    try {
+      const list = await api(`/courses/${courseId}/lessons`);
+      $('lessonList').innerHTML = list.length ? list.map(lessonRow).join('') : `
+      <div style="padding:48px 24px; text-align:center; color:var(--muted); font-size:14px">
+        ${owned() ? 'No lessons yet — add the first one.' : 'This course has no lessons yet.'}
+      </div>`;
+    } catch (e) {
+      $('lessonList').innerHTML =
+              `<div style="padding:26px; color:var(--danger); font-size:14px">${esc(e.message)}</div>`;
+    }
+  }
+
+  function lessonRow(l){
+    // Anyone who can see the lesson can open its file (published courses are
+    // public). The presigned URL is fetched on click, so it's always fresh.
+    const fileChip = l.hasFile
+            ? `<button class="filechip" onclick="openFile('${l.id}')" title="${esc(l.fileName || 'file')}">
+         <span class="fi">▶</span>${esc(shortName(l.fileName))} · ${fmtSize(l.fileSize)}
+       </button>`
+            : (owned() ? `<span class="filechip empty">No file</span>` : '');
+
+    const ownerActs = owned() ? `<div class="lacts">
+      <button class="btn sm" onclick='openUploadModal("${l.id}", ${l.hasFile})'>${l.hasFile ? 'Replace' : 'Upload'}</button>
+      ${l.hasFile ? `<button class="btn sm" onclick="stripFile('${l.id}')">Remove file</button>` : ''}
+      <button class="btn sm" onclick='openLessonModal(${JSON.stringify(l).replace(/'/g,"&#39;")})'>Edit</button>
+      <button class="btn danger sm" onclick="removeLesson('${l.id}')">Delete</button>
+    </div>` : '';
+
+    return `<div class="lesson">
+    <div class="lpos">${l.position}</div>
+    <div class="lbody">
+      <b>${esc(l.title)}</b>
+      <p>${esc(l.content || 'No content yet.')}</p>
+      ${fileChip ? `<div class="lfile">${fileChip}</div>` : ''}
+    </div>
+    ${ownerActs}</div>`;
+  }
+
+  function shortName(name){
+    if (!name) return 'file';
+    return name.length > 24 ? name.slice(0, 21) + '…' : name;
+  }
+  function fmtSize(bytes){
+    if (!bytes && bytes !== 0) return '';
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024*1024) return (bytes/1024).toFixed(0) + ' KB';
+    return (bytes/1024/1024).toFixed(1) + ' MB';
+  }
+
+  /* ---------- file ops ---------- */
+  // Fetches a fresh presigned URL, then opens it. The URL points straight at
+  // S3 - the bytes never pass through our API.
+  async function openFile(lessonId){
+    try {
+      const res = await api(`/courses/${current.id}/lessons/${lessonId}/file`);
+      window.open(res.url, '_blank');
+    } catch (e) { err("Couldn't open the file", e.message); }
+  }
+
+  let uploadLessonId = null;
+  function openUploadModal(lessonId, isReplace){
+    uploadLessonId = lessonId;
+    $('up-title').textContent = isReplace ? 'Replace file' : 'Upload a file';
+    $('up-sub').textContent = isReplace
+            ? 'The current file will be replaced.'
+            : 'mp4, webm, pdf, png or jpg.';
+    $('up-input').value = '';
+    $('up-name').textContent = 'No file chosen';
+    $('up-save').disabled = true;
+    openModal('uploadScrim');
+  }
+
+  async function doUpload(){
+    const input = $('up-input');
+    if (!input.files || !input.files[0]) return err('No file', 'Choose a file first.');
+
+    const form = new FormData();
+    form.append('file', input.files[0]);
+
+    const btn = $('up-save'); busy(btn, true, 'Uploading…');
+    try {
+      // Note: no Content-Type header set by hand - the browser sets the
+      // multipart boundary itself. Setting it manually would break the upload.
+      const headers = {};
+      if (token) headers['Authorization'] = 'Bearer ' + token;
+      const res = await fetch(`${API}/courses/${current.id}/lessons/${uploadLessonId}/file`, {
+        method: 'POST', headers, body: form
+      });
+      if (!res.ok){
+        const t = await res.text(); let msg = 'Upload failed';
+        try { const p = JSON.parse(t); msg = (p.details?.join(', ')) || p.message || msg; } catch {}
+        throw new Error(msg);
+      }
+      ok('File uploaded', `${input.files[0].name} is attached.`);
+      closeModal('uploadScrim');
+      loadLessons(current.id);
+    } catch (e) { err("Couldn't upload", e.message); }
+    finally { busy(btn, false, 'Upload'); }
+  }
+
+  async function stripFile(lessonId){
+    if (!confirm('Remove the file from this lesson?')) return;
+    try {
+      await api(`/courses/${current.id}/lessons/${lessonId}/file`, { method:'DELETE' });
+      ok('File removed', 'The file was deleted from storage.');
+      loadLessons(current.id);
+    } catch (e) { err("Couldn't remove the file", e.message); }
+  }
+
+  /* ---------- course write ops ---------- */
+  function openCourseModal(isEdit){
+    editingCourse = isEdit ? current : null;
+    $('cm-title').textContent = isEdit ? 'Edit course' : 'New course';
+    $('cm-sub').textContent   = isEdit ? 'Changes apply as soon as you save.' : "It'll be saved as a draft.";
+    $('cm-name').value = isEdit ? current.title : '';
+    $('cm-desc').value = isEdit ? (current.description || '') : '';
+    $('cm-statusField').style.display = isEdit ? 'block' : 'none';
+    if (isEdit) $('cm-status').value = current.status;
+    openModal('courseScrim');
+    setTimeout(() => $('cm-name').focus(), 70);
+  }
+
+  async function saveCourse(){
+    const title = $('cm-name').value.trim();
+    const description = $('cm-desc').value.trim();
+    if (!title) return err('Title required', 'Give the course a title before saving.');
+
+    const btn = $('cm-save'); busy(btn, true, 'Saving…');
+    try {
+      if (editingCourse){
+        const status = $('cm-status').value;
+        const wasStatus = editingCourse.status;
+        current = await api('/courses/' + editingCourse.id, {
+          method:'PUT', body: JSON.stringify({ title, description, status }) });
+        renderCourse(); loadLessons(current.id);
+        if (wasStatus !== status && status === 'PUBLISHED')      ok('Course published', `"${current.title}" is now in the catalog.`);
+        else if (wasStatus !== status && status === 'DRAFT')     ok('Moved to draft', `"${current.title}" is hidden from the catalog.`);
+        else                                                     ok('Course updated', `Changes to "${current.title}" were saved.`);
+      } else {
+        const created = await api('/courses', { method:'POST', body: JSON.stringify({ title, description }) });
+        ok('Course created', `"${created.title}" was saved as a draft.`);
+        loadTeaching();
+      }
+      closeModal('courseScrim');
+    } catch (e) { err("Couldn't save the course", e.message); }
+    finally { busy(btn, false, 'Save course'); }
+  }
+
+  async function setStatus(status, title, msg){
+    try {
+      current = await api('/courses/' + current.id, {
+        method:'PUT',
+        body: JSON.stringify({ title: current.title, description: current.description, status }) });
+      renderCourse(); loadLessons(current.id);
+      ok(title, msg);
+    } catch (e) { err("Couldn't change visibility", e.message); }
+  }
+  const publish   = () => setStatus('PUBLISHED', 'Course published', `"${current.title}" is now visible in the catalog.`);
+  const unpublish = () => setStatus('DRAFT', 'Moved to draft', `"${current.title}" is hidden from the catalog again.`);
+
+  async function removeCourse(){
+    const name = current.title;
+    if (!confirm(`Delete "${name}"? Its lessons go too. This can't be undone.`)) return;
+    try {
+      await api('/courses/' + current.id, { method:'DELETE' });
+      ok('Course deleted', `"${name}" and its lessons were removed.`);
+      go('teaching');
+    } catch (e) { err("Couldn't delete the course", e.message); }
+  }
+
+  /* ---------- lesson write ops ---------- */
+  function openLessonModal(lesson){
+    editingLesson = lesson || null;
+    $('lm-title').textContent = lesson ? 'Edit lesson' : 'Add a lesson';
+    $('lm-name').value    = lesson ? lesson.title : '';
+    $('lm-pos').value     = lesson ? lesson.position : 1;
+    $('lm-content').value = lesson ? (lesson.content || '') : '';
+    openModal('lessonScrim');
+    setTimeout(() => $('lm-name').focus(), 70);
+  }
+
+  async function saveLesson(){
+    const title = $('lm-name').value.trim();
+    const content = $('lm-content').value.trim();
+    const position = parseInt($('lm-pos').value, 10);
+    if (!title) return err('Title required', 'Give the lesson a title before saving.');
+    if (!position || position < 1) return err('Invalid position', 'Position must be 1 or higher.');
+
+    const btn = $('lm-save'); busy(btn, true, 'Saving…');
+    const body = JSON.stringify({ title, content, position });
+    try {
+      if (editingLesson){
+        await api(`/courses/${current.id}/lessons/${editingLesson.id}`, { method:'PUT', body });
+        ok('Lesson updated', `"${title}" was saved.`);
+      } else {
+        await api(`/courses/${current.id}/lessons`, { method:'POST', body });
+        ok('Lesson added', `"${title}" is now lesson ${position}.`);
+      }
+      closeModal('lessonScrim');
+      loadLessons(current.id);
+    } catch (e) { err("Couldn't save the lesson", e.message); }
+    finally { busy(btn, false, 'Save lesson'); }
+  }
+
+  async function removeLesson(id){
+    if (!confirm('Delete this lesson?')) return;
+    try {
+      await api(`/courses/${current.id}/lessons/${id}`, { method:'DELETE' });
+      ok('Lesson deleted', 'It was removed from this course.');
+      loadLessons(current.id);
+    } catch (e) { err("Couldn't delete the lesson", e.message); }
+  }
+
+  /* ---------- people (admin) ---------- */
+  async function loadPeople(){
+    const box = $('peopleTable');
+    box.innerHTML = '<div class="skel" style="height:240px"></div>';
+    try {
+      const list = await api('/users');
+      $('peopleCount').style.display = 'inline-block';
+      $('peopleCount').textContent = list.length;
+      box.innerHTML = `<div class="tbl-wrap"><table class="tbl">
+      <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Joined</th></tr></thead>
+      <tbody>${list.map(u => `<tr>
+        <td><div class="by"><div class="avatar">${esc(initials(u.name))}</div><span>${esc(u.name)}</span></div></td>
+        <td class="mono">${esc(u.email)}</td>
+        <td><span class="pill role">${esc(u.role)}</span></td>
+        <td style="color:var(--muted)">${u.createdAt ? new Date(u.createdAt).toLocaleDateString() : '—'}</td>
+      </tr>`).join('')}</tbody></table></div>`;
+    } catch (e) {
+      box.innerHTML = `<div class="empty"><div class="ico">⚠</div>
+      <h3>Couldn't load people</h3><p>${esc(e.message)}</p></div>`;
+    }
+  }
+
+  /* ---------- modals ---------- */
+  const openModal  = id => $(id).classList.add('on');
+  const closeModal = id => $(id).classList.remove('on');
+  document.querySelectorAll('.scrim').forEach(s =>
+          s.addEventListener('click', e => { if (e.target === s) s.classList.remove('on'); }));
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') document.querySelectorAll('.scrim.on').forEach(s => s.classList.remove('on'));
+    if (e.key === 'Enter' && !document.querySelector('.scrim.on')){
+      if (view === 'login') doLogin();
+      else if (view === 'register') doRegister();
+    }
+  });
+
+  /* ---------- boot ---------- */
+  (async function boot(){
+    if (token){
+      try {
+        me = await api('/users/me');                     // re-verify the stored session
+        localStorage.setItem('lms_me', JSON.stringify(me));
+        chrome(); go(homeFor(me.role)); return;
+      } catch { token = null; me = null; localStorage.removeItem('lms_token'); localStorage.removeItem('lms_me'); }
+    }
+    chrome();
+    go('landing');
+    fetch(API + '/courses?page=0&size=1').then(() => setApiStatus(true)).catch(() => setApiStatus(false));
+  })();
+</script>
+</body>
+</html>
