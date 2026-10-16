@@ -32,7 +32,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CourseController {
 
-    private  CourseService courseService;
+    private final  CourseService courseService;
 
     /**
      * Instructor-only - the role rule lives in SecurityConfig. The owner is

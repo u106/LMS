@@ -30,8 +30,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class EnrollmentService {
 
-    private  EnrollmentRepository enrollmentRepository;
-    private  CourseDirectory courseDirectory;
+    private final  EnrollmentRepository enrollmentRepository;
+    private final  CourseDirectory courseDirectory;
 
     @Transactional
     public EnrollmentResponse enroll(UUID courseId, UUID studentId) {

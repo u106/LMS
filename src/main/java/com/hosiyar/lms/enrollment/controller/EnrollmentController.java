@@ -29,7 +29,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class EnrollmentController {
 
-    private  EnrollmentService enrollmentService;
+    private final EnrollmentService enrollmentService;
 
     /**
      * Any authenticated user can enrol - enrolling is what makes them a

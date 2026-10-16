@@ -35,7 +35,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class LessonController {
 
-    private LessonService lessonService;
+    private final LessonService lessonService;
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<LessonResponse>>> list(

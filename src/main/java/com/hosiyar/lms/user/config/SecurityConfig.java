@@ -67,7 +67,7 @@ public class SecurityConfig {
                         // demands a token for the HTML page itself and the
                         // browser gets a 401 instead of the app.
                         .requestMatchers(
-                                "/", "/index.html", "/favicon.ico",
+                                "/", "/*.html", "/favicon.ico",
                                 "/css/**", "/js/**", "/assets/**"
                         ).permitAll()
                         .requestMatchers(

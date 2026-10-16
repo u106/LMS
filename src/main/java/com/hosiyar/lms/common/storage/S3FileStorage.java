@@ -17,7 +17,7 @@ import java.time.Duration;
 /**
  * The only class in the project that knows S3 exists.
  */
-@Component
+@Component  
 public class S3FileStorage implements FileStorage {
 
     private final S3Client s3Client;
