@@ -1,9 +1,7 @@
 # LMS - Spring Boot project series
 
-A Learning Management System built as a project-based Spring Boot series. Each episode's code is tagged
-in this repo so you can check out the exact state of the project at any
-point in the series.
-
+A Learning Management System built as a project-based Spring Boot series. 
+Full-stack LMS with role-based access for students, instructors and admins. Built with Java, Spring Boot, Spring Security (JWT), JPA/Hibernate, MySQL and Flyway. Supports course and lesson management, enrollments, and file uploads to AWS S3 using presigned URLs. React front end consumes the REST API.
 ## Docs
 
 Requirements, design, and decision records live in [`docs/`](./docs) —
@@ -34,12 +32,11 @@ com.hosiyar.lms
 - Java 21, Spring Boot 4.1 (Spring Framework 7)
 - MySQL, Flyway migrations
 - Spring Security 7 + JWT (added in the Users & auth episode)
-- Redis, Kafka (added when the Notifications episode needs them)
-- Stripe (added in the Payments episode)
+- Redis, Kafka (added when the Notifications needed)(will add soon)
+- Stripe (added in the Payments)(will add soon)
 - Testcontainers for integration tests (added in the Testing module)
 - Docker + GitHub Actions (added in the Containerization & CI/CD module —
-  see [ADR-005](./docs/adr/adr-005-defer-docker.md) for why it's not
-  needed yet)
+  see [ADR-005]
 
 ## Requirements
 
@@ -67,18 +64,5 @@ curl http://localhost:8080/api/v1/ping
 curl http://localhost:8080/actuator/health
 ```
 
-## Following along
-
-Each video's code is tagged when the episode is published. Clone the repo
-and `git checkout <tag>` to see the project exactly as it stood at that
-video.
-
-| Episode | Topic | Tag | Video |
-|---|---|---|---|
-| 1 | Requirements & design — Users & Auth | `video1` | _link once published_ |
-| 2 | Project bootstrap, shared kernel, local MySQL | `video2` | _link once published_ |
-| 3 | Users module — data layer, registration | `video3` | _link once published_ |
-| 4 | Spring Security 7 + JWT authentication | `video4` | _link once published_ |
-| 5 | Role-based access, token refresh, first tests | `video5` | _link once published_ |
 
 
