@@ -25,18 +25,18 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,info
+        include: health,info,metrics,loggers
   endpoint:
     health:
       show-details: when-authorized
 
 lms:
-  s3:
+  s3: 
     # Note what is NOT here: access key and secret. The SDK's default
     # credential provider chain finds them - environment variables locally,
     # an IAM role in production. Credentials never belong in a file that
     # gets committed.
-    bucket: ${S3_BUCKET:dev-lms-storage-bucket}
+    bucket: ${S3_BUCKET:udbhav-s3-bucket}
     region: ${AWS_REGION:ap-south-1}
     presigned-url-expiry-minutes: 15
   cors:

@@ -1,4 +1,4 @@
-const { Layout, homeFor, mount } = window.UI;
+const { Layout, Art, homeFor, mount } = window.UI;
 const { useEffect } = React;
 
 function Landing() {
@@ -16,7 +16,8 @@ function Landing() {
             <a className="btn lg" href="register.html">Create an account</a>
           </div>
         </div>
-        <div className="shelf">{spines.map(([t, s]) => <div className="spine" key={t}><b>{t}</b><span>{s}</span></div>)}</div>
+        <Art className="hero-art" src="/img/hero-students.jpg" alt="Students learning together"
+             fallback={<div className="shelf">{spines.map(([t, s]) => <div className="spine" key={t}><b>{t}</b><span>{s}</span></div>)}</div>} />
       </div>
     </Layout>
   );

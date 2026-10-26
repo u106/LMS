@@ -1,12 +1,15 @@
 package com.hosiyar.lms.common.exception;
 
 import jakarta.validation.ConstraintViolationException;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.time.Instant;
 import java.util.List;
@@ -15,6 +18,7 @@ import java.util.List;
  * Central place every module's exceptions land. Keeps error response shape
  * identical across the whole API instead of each controller rolling its own.
  */
+@Slf4j   // class ke upar (import lombok.extern.slf4j.Slf4j;)
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -54,8 +58,14 @@ public class GlobalExceptionHandler {
         return build(HttpStatus.BAD_REQUEST, "Validation failed", request, details);
     }
 
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<ApiError> handleNoResource(NoResourceFoundException ex, WebRequest request) {
+        return build(HttpStatus.NOT_FOUND, "Resource not found", request, null);
+    }
+    
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiError> handleGeneric(Exception ex, WebRequest request) {
+        log.error("Unhandled exception on {}", request.getDescription(false), ex);
         return build(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected error occurred", request, null);
     }
 

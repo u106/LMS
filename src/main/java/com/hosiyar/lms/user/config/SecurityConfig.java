@@ -68,7 +68,7 @@ public class SecurityConfig {
                         // browser gets a 401 instead of the app.
                         .requestMatchers(
                                 "/", "/*.html", "/favicon.ico",
-                                "/css/**", "/js/**", "/assets/**"
+                                "/css/**", "/js/**", "/img/**", "/assets/**"
                         ).permitAll()
                         .requestMatchers(
                                 "/api/v1/auth/**",
@@ -80,6 +80,7 @@ public class SecurityConfig {
                         // UserService.findAll() also carries @PreAuthorize, so the
                         // rule holds even if some future controller calls it by
                         // another path.
+                        .requestMatchers("/actuator/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET,"/","/index.html","/favicon.ico").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/users").hasRole("ADMIN")
 

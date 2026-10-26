@@ -1,5 +1,4 @@
-const { Layout, Empty, Skeletons, useAsync, ok, err, spineFor, rowsOf, mount } = window.UI;
-
+const { Layout, Banner, Empty, Skeletons, useAsync, ok, err, spineFor, rowsOf, mount } = window.UI;
 function MyLearning() {
   const q = useAsync(() => api('/enrollments/me?page=0&size=48'), []);
   const list = rowsOf(q.data);
@@ -11,6 +10,7 @@ function MyLearning() {
   }
   return (
     <Layout roles={['STUDENT', 'INSTRUCTOR']}>
+	<Banner title="Keep going, you're doing great!" sub="Your enrolled courses are right here." />
       <div className="phead">
         <div><h2>My learning{!q.loading && <span className="count">{list.length}</span>}</h2><p>Courses you're enrolled in.</p></div>
         <a className="btn" href="catalog.html">Browse catalog</a>

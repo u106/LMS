@@ -62,7 +62,7 @@ function Nav() {
   return (
     <nav className="nav"><div className="nav-in">
       <a className="brand" href={signed ? homeFor(me.role) : 'index.html'}>
-        <div className="mark">H</div><div className="brand-name">Hosiyar Learn</div>
+        <div className="mark">RL</div><div className="brand-name">Rocket Learning</div>
       </a>
       <div className="nav-links">
         {links.map(([href, label]) => <a key={href} href={href} className={'nav-link' + (here === href ? ' on' : '')}>{label}</a>)}
@@ -99,7 +99,7 @@ function Layout({ roles, children }) {
     <Nav />
     <main><div className="view on">{children}</div></main>
     <footer className="foot"><div className="foot-in">
-      <span>Hosiyar Learn — React client for the Spring Boot LMS API</span>
+      <span>Rocket Learning — React client for the Spring Boot LMS API</span>
       <div className={'status ' + (up === null ? '' : up ? 'up' : 'down')}>
         <span className="led" /><span>{up === null ? 'Checking API…' : up ? 'API connected' : 'API unreachable'}</span>
       </div>
@@ -199,18 +199,36 @@ function CourseModal({ open, course, onClose, onSaved }) {
   );
 }
 
+/* Cartoon image that quietly disappears (or shows `fallback`) if the file is missing. */
+function Art({ src, alt = '', className = '', fallback = null }) {
+  const [bad, setBad] = useState(false);
+  if (bad) return fallback;
+  return <img className={'art ' + className} src={src} alt={alt} loading="lazy" onError={() => setBad(true)} />;
+}
+
+function Banner({ title, sub }) {
+  return (
+    <div className="banner">
+      <div className="banner-txt"><h2>{title}</h2><p>{sub}</p></div>
+      <Art className="banner-art" src="/img/banner-students.jpg" alt="Students studying together" />
+    </div>
+  );
+}
 /* Shared card for the login / register pages. */
 function AuthCard({ title, sub, label, busy, onSubmit, swap, children }) {
   return (
-    <div className="auth-wrap"><form className="auth" onSubmit={e => { e.preventDefault(); onSubmit(); }}>
-      <h2>{title}</h2><p className="sub">{sub}</p>{children}
-      <Btn className="btn primary lg" style={{ width: '100%' }} busy={busy} type="submit">{label}</Btn>
-      <div className="swap">{swap}</div>
-    </form></div>
+    <div className="auth-split">
+      <Art className="auth-art" src="/img/auth-students.jpg" alt="Two students learning together" />
+      <div className="auth-wrap"><form className="auth" onSubmit={e => { e.preventDefault(); onSubmit(); }}>
+        <h2>{title}</h2><p className="sub">{sub}</p>{children}
+        <Btn className="btn primary lg" style={{ width: '100%' }} busy={busy} type="submit">{label}</Btn>
+        <div className="swap">{swap}</div>
+      </form></div>
+    </div>
   );
 }
 
 const mount = C => ReactDOM.createRoot(document.getElementById('root')).render(<C />);
 
-window.UI = { Layout, Modal, Field, Btn, Pill, Empty, Skeletons, CourseCard, CourseList, CourseModal, AuthCard,
+window.UI = { Art, Banner, Layout, Modal, Field, Btn, Pill, Empty, Skeletons, CourseCard, CourseList, CourseModal, AuthCard,
               useAsync, ok, err, toast, spineFor, initials, homeFor, rowsOf, mount };
